@@ -1,0 +1,53 @@
+defaults: &defaults
+  docker:
+    - image: quay.io/pantheon-public/php-ci:2.x
+  working_directory: ~/pantheon_workspace
+  environment:
+
+    #=========================================================================
+    # In addition to the environment variables defined in this file, also
+    # add the following variables in the Circle CI UI.
+    #
+    # See: https://circleci.com/docs/2.0/env-vars/
+    #
+    # PANTHEON_SITE:  Name of the Pantheon site to rebuild
+    # PANTHEON_ENV:  Name of the environment on the Pantheon site to rebuild
+    # TERMINUS_TOKEN: The Pantheon machine token
+    # GIT_EMAIL:      The email address to use when making commits
+    #
+    # DEFAULT_ACCOUNT_PASS:    The admin password to use when installing.
+    # DEFAULT_ACCOUNT_MAIL:    The email address to give the admin when installing.
+    # DEFAULT_ACCOUNT_NAME:    The email address to give the admin when installing.
+    # APIGEE_ORG: Name of the apigee organization to connect to
+    # APIGEE_USER: Apigee username to use to connect
+    # APIGEE_PASS: Apigee user password
+    #=========================================================================
+
+    TZ: "/usr/share/zoneinfo/America/New_York"
+    TERM: dumb
+    TERMINUS_HIDE_UPDATE_MESSAGE: 1
+
+version: 2
+jobs:
+    # Note that we do more work on the Drupal 8 + GitHub test than in other permutations.
+    # We test creating a PR and merging it to master here, but omit those tests
+    # elsewhere in the interest of saving testing time.
+    build_d8_kickstart_test_site:
+        <<: *defaults
+        resource_class: large
+        steps:
+            - add_ssh_keys:
+                fingerprints:
+                    - "62:f8:5b:5a:62:ad:40:5e:13:8c:a4:58:95:62:1d:0d"
+            - checkout
+            - run:
+                name: Run the install scripts
+                command: ./scripts/setup_install.sh
+workflows:
+    version: 2
+    build_every_4_hours:
+        triggers:
+            - schedule:
+                cron: "0 */4 * * *" #trigger every 4 hours
+        jobs:
+            - build_d8_kickstart_test_site
