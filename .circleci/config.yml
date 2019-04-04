@@ -49,5 +49,9 @@ workflows:
         triggers:
             - schedule:
                 cron: "0 */4 * * *" #trigger every 4 hours
+                filters:
+                    branches:
+                        only:
+                            -master
         jobs:
             - build_d8_kickstart_test_site
