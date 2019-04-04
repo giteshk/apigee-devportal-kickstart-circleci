@@ -20,7 +20,7 @@ git checkout -t origin/${PANTHEON_ENV}
 rm -rf vendor composer.lock
 
 # Composer Update
-composer update --with-dependencies
+composer update --with-dependencies -o
 
 # Remove the .git files
 rm -rf web/modules/contrib/swagger_ui_formatter/.git  web/profiles/contrib/apigee_devportal_kickstart/.git web/themes/contrib/radix/.git
