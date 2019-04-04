@@ -45,16 +45,6 @@ jobs:
                 command: ./scripts/setup_install.sh
 workflows:
   version: 2
-  build_at_15_past_hour:
-    triggers:
-      - schedule:
-          cron: "15 * * * *" #trigger at midnight
-          filters:
-            branches:
-              only:
-                - master
-    jobs:
-      - build_d8_kickstart_test_site
   build_at_12_am:
     triggers:
       - schedule:
