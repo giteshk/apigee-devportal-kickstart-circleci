@@ -58,7 +58,7 @@ workflows:
   build_at_8_am:
     triggers:
       - schedule:
-          cron: "0 10 * * *" #trigger at 8 am
+          cron: "0 8 * * *" #trigger at 8 am
           filters:
             branches:
               only:
