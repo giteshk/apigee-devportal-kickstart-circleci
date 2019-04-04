@@ -45,10 +45,50 @@ jobs:
                 command: ./scripts/setup_install.sh
 workflows:
   version: 2
-  build_every_4_hours:
+  build_at_12_am:
     triggers:
       - schedule:
-          cron: "0 */4 * * *" #trigger every 4 hours
+          cron: "0 0 * * *" #trigger at midnight
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build_d8_kickstart_test_site
+  build_at_8_am:
+    triggers:
+      - schedule:
+          cron: "0 10 * * *" #trigger at 8 am
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build_d8_kickstart_test_site
+  build_at_12_pm:
+    triggers:
+      - schedule:
+          cron: "0 12 * * *" #trigger at 12 pm
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build_d8_kickstart_test_site
+  build_at_4_pm:
+    triggers:
+      - schedule:
+          cron: "0 16 * * *" #trigger at 4 pm
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build_d8_kickstart_test_site
+  build_at_8_pm:
+    triggers:
+      - schedule:
+          cron: "0 20 * * *" #trigger at 8 pm
           filters:
             branches:
               only:
