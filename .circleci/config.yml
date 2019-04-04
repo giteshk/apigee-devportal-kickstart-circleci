@@ -38,7 +38,7 @@ jobs:
         steps:
             - add_ssh_keys:
                 fingerprints:
-                    - "62:f8:5b:5a:62:ad:40:5e:13:8c:a4:58:95:62:1d:0d"
+                    - "08:d9:e4:32:97:d1:b9:0f:06:c8:e4:11:3f:f4:e7:1d"
             - checkout
             - run:
                 name: Run the install scripts
