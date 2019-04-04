@@ -15,4 +15,4 @@ Define the following environment variables in your circle CI project :
 
 Additionally you will need to change the fingerprint value in the config.yml once you upload your key into circleci
 
-Status of Build : [![CircleCI](https://circleci.com/gh/giteshk/apigee-devportal-kickstart-circleci.svg?style=svg)](https://circleci.com/gh/giteshk/apigee-devportal-kickstart-circleci)
+Status of Build : [![CircleCI](https://circleci.com/gh/giteshk/apigee-devportal-kickstart-circleci.svg?style=svg&circle-token=2c475c0d73a2d66649b6691000029b9eb58f219a)](https://circleci.com/gh/giteshk/apigee-devportal-kickstart-circleci)
