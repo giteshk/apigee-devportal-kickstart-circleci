@@ -68,5 +68,6 @@ terminus env:clear-cache ${PANTHEON_SITE}.${PANTHEON_ENV}
 echo "About to connect portal to the configured org"
 export CONNECTION_JSON="{\"auth_type\":\"basic\",\"organization\":\"${APIGEE_ORG}\",\"username\":\"${APIGEE_USER}\",\"password\":\"${APIGEE_PASS}\"}"
 terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- key-save apigee_edge_connection_default "$CONNECTION_JSON"   --label="Apigee Edge Connection" --key-type=apigee_auth --key-provider=apigee_edge_private_file --key-input=apigee_auth_input --overwrite -y
+terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -- config:set apigee_edge.auth active_key "apigee_edge_connection_default" -y
 
 echo "Finished installing the latest code and configuring the site"
