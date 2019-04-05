@@ -93,10 +93,10 @@ jobs:
             command: terminus drush ${PANTHEON_SITE}.gauth -- en social_auth_google -y
         - run:
             name: Set the client id for Google Auth
-            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:get social_auth_google.settings client_id "$GAUTH_CLIENT_ID"
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:set social_auth_google.settings client_id "$GAUTH_CLIENT_ID"
         - run:
             name: Set the client secret for Google Auth
-            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:get social_auth_google.settings client_secret "$GAUTH_CLIENT_SECRET"
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:set social_auth_google.settings client_secret "$GAUTH_CLIENT_SECRET"
 
 workflows:
   version: 2
