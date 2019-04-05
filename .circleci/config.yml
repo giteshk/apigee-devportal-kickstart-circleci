@@ -93,10 +93,10 @@ jobs:
             command: terminus drush ${PANTHEON_SITE}.gauth -- en social_auth_google -y
         - run:
             name: Set the client id for Google Auth
-            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:set social_auth_google.settings client_id "$GAUTH_CLIENT_ID"
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:set social_auth_google.settings client_id "$GAUTH_CLIENT_ID" -y
         - run:
             name: Set the client secret for Google Auth
-            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:set social_auth_google.settings client_secret "$GAUTH_CLIENT_SECRET"
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:set social_auth_google.settings client_secret "$GAUTH_CLIENT_SECRET" -y
 
 workflows:
   version: 2
@@ -140,6 +140,9 @@ workflows:
                 - master
     jobs:
       - build_d8_ci_latest
+      - build_d8_devteams
+      - build_d8_google_auth_branch
+      - build_d8_mint
   rebuild_on_demand:
     jobs:
       - build_d8_devteams
