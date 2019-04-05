@@ -1,3 +1,12 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+  then
+    PANTHEON_ENV="ci-latest"
+   else
+    PANTHEON_ENV=$1
+fi
+
 # Setup Git
 git config --global user.email "$GIT_EMAIL" && git config --global user.name "Circle CI" && git config --global core.fileMode false
 

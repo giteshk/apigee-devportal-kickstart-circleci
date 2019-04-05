@@ -32,7 +32,7 @@ jobs:
     # Note that we do more work on the Drupal 8 + GitHub test than in other permutations.
     # We test creating a PR and merging it to master here, but omit those tests
     # elsewhere in the interest of saving testing time.
-    build_d8_kickstart_test_site:
+    build_d8_ci_latest:
         <<: *defaults
         resource_class: large
         steps:
@@ -42,10 +42,34 @@ jobs:
             - checkout
             - run:
                 name: Run the install scripts
-                command: ./scripts/setup_install.sh
+                command: ./scripts/setup_install.sh ci-latest
+    build_d8_google_auth_branch:
+      <<: *defaults
+      resource_class: large
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "08:d9:e4:32:97:d1:b9:0f:06:c8:e4:11:3f:f4:e7:1d"
+        - checkout
+        - run:
+            name: Run the install scripts
+            command: ./scripts/setup_install.sh gauth
+        - run:
+            name: Install the google login module
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- social_auth_google -y
+        - run:
+            name: Install the google login module
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- social_auth_google -y
+        - run:
+            name: Set the client id for Google Auth
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:get social_auth_google.settings client_id "$GAUTH_CLIENT_ID"
+        - run:
+            name: Set the client secret for Google Auth
+            command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:get social_auth_google.settings client_secret "$GAUTH_CLIENT_SECRET"
+
 workflows:
   version: 2
-  build_on_schedule:
+  build_every4_hours:
     triggers:
       - schedule:
           cron: "0 4 * * *" #trigger at 12 am EST
@@ -84,4 +108,7 @@ workflows:
               only:
                 - master
     jobs:
-      - build_d8_kickstart_test_site
+      - build_d8_ci_latest
+  rebuild_on_demand:
+    jobs:
+      - build_d8_google_auth_branch
