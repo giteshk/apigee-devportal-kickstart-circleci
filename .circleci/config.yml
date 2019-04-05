@@ -43,6 +43,40 @@ jobs:
             - run:
                 name: Run the install scripts
                 command: ./scripts/setup_install.sh ci-latest
+    build_d8_devteams:
+      <<: *defaults
+      resource_class: large
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "08:d9:e4:32:97:d1:b9:0f:06:c8:e4:11:3f:f4:e7:1d"
+        - checkout
+        - run:
+            name: Run the install scripts
+            command: ./scripts/setup_install.sh devteams
+        - run:
+            name: Install the apigee_edge_teams module
+            command: terminus drush ${PANTHEON_SITE}.devteams -- en apigee_edge_teams -y
+        - run:
+            name: Clear caches
+            command: terminus env:clear-cache ${PANTHEON_SITE}.devteams
+    build_d8_mint:
+      <<: *defaults
+      resource_class: large
+      steps:
+        - add_ssh_keys:
+            fingerprints:
+              - "08:d9:e4:32:97:d1:b9:0f:06:c8:e4:11:3f:f4:e7:1d"
+        - checkout
+        - run:
+            name: Run the install scripts
+            command: ./scripts/setup_install.sh mint $APIGEE_MINT_ORG
+        - run:
+            name: Install the apigee_edge_teams module
+            command: terminus drush ${PANTHEON_SITE}.mint -- en apigee_m10n -y
+        - run:
+            name: Clear caches
+            command: terminus env:clear-cache ${PANTHEON_SITE}.mint
     build_d8_google_auth_branch:
       <<: *defaults
       resource_class: large
@@ -56,10 +90,7 @@ jobs:
             command: ./scripts/setup_install.sh gauth
         - run:
             name: Install the google login module
-            command: terminus drush ${PANTHEON_SITE}.gauth -q -- social_auth_google -y
-        - run:
-            name: Install the google login module
-            command: terminus drush ${PANTHEON_SITE}.gauth -q -- social_auth_google -y
+            command: terminus drush ${PANTHEON_SITE}.gauth -- en social_auth_google -y
         - run:
             name: Set the client id for Google Auth
             command: terminus drush ${PANTHEON_SITE}.gauth -q -- config:get social_auth_google.settings client_id "$GAUTH_CLIENT_ID"
@@ -69,7 +100,7 @@ jobs:
 
 workflows:
   version: 2
-  build_every4_hours:
+  rebuild_every4_hours:
     triggers:
       - schedule:
           cron: "0 4 * * *" #trigger at 12 am EST
@@ -111,4 +142,6 @@ workflows:
       - build_d8_ci_latest
   rebuild_on_demand:
     jobs:
+      - build_d8_devteams
       - build_d8_google_auth_branch
+      - build_d8_mint

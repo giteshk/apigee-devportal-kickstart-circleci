@@ -7,6 +7,13 @@ if [ -z "$1" ]
     PANTHEON_ENV=$1
 fi
 
+if [ -z "$2" ]
+  then
+       echo "setting the org to $APIGEE_ORG"
+   else
+    APIGEE_ORG=$2
+fi
+
 # Setup Git
 git config --global user.email "$GIT_EMAIL" && git config --global user.name "Circle CI" && git config --global core.fileMode false
 
