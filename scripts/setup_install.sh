@@ -59,7 +59,13 @@ terminus env:wipe ${PANTHEON_SITE}.${PANTHEON_ENV} -y
 
 # Run Site install
 echo "About to start the site install"
-terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- site-install apigee_devportal_kickstart --account-mail=${DEFAULT_ACCOUNT_MAIL} --account-name=${DEFAULT_ACCOUNT_NAME} --account-pass=${DEFAULT_ACCOUNT_PASS} --site-mail=noreply@apigee.com --site-name="ACME Developer Portal" apigee_devportal_kickstart apigee_edge_authentication_form.key_input_settings.organization=${APIGEE_ORG} apigee_edge_authentication_form.key_input_settings.username=${APIGEE_USER} apigee_edge_authentication_form.key_input_settings.password='${APIGEE_PASS}' -y
+terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- site-install apigee_devportal_kickstart \
+ --account-mail=${DEFAULT_ACCOUNT_MAIL} --account-name=${DEFAULT_ACCOUNT_NAME} --account-pass=${DEFAULT_ACCOUNT_PASS} \
+ --site-mail=noreply@apigee.com --site-name="ACME Developer Portal" \
+ apigee_edge_authentication_form.key_input_settings.organization=${APIGEE_ORG} \
+ apigee_edge_authentication_form.key_input_settings.username=${APIGEE_USER} \
+ apigee_edge_authentication_form.key_input_settings.password='${APIGEE_PASS}' -y
+ 
 
 # Clear Caches
 terminus env:clear-cache ${PANTHEON_SITE}.${PANTHEON_ENV} 
