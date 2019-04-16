@@ -64,7 +64,7 @@ terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- site-install apigee_devpor
  --site-mail=noreply@apigee.com --site-name="ACME Developer Portal" \
  apigee_edge_authentication_form.key_input_settings.organization=${APIGEE_ORG} \
  apigee_edge_authentication_form.key_input_settings.username=${APIGEE_USER} \
- apigee_edge_authentication_form.key_input_settings.password='${APIGEE_PASS}' -y
+ apigee_edge_authentication_form.key_input_settings.password="${APIGEE_PASS}" -y
  
 
 # Clear Caches
