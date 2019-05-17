@@ -61,19 +61,23 @@ terminus env:wipe ${PANTHEON_SITE}.${PANTHEON_ENV} -y
 echo "About to start the site install"
 terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- site-install apigee_devportal_kickstart \
  --account-mail=${DEFAULT_ACCOUNT_MAIL} --account-name=${DEFAULT_ACCOUNT_NAME} --account-pass=${DEFAULT_ACCOUNT_PASS} \
- --site-mail=noreply@apigee.com --site-name="ACME Developer Portal" \
- apigee_edge_authentication_form.key_input_settings.organization=${APIGEE_ORG} \
- apigee_edge_authentication_form.key_input_settings.username=${APIGEE_USER} \
- apigee_edge_authentication_form.key_input_settings.password="${APIGEE_PASS}" -y
+ --site-mail=noreply@apigee.com --site-name="ACME Developer Portal" -y \
+
+# apigee_edge_authentication_form.key_input_settings.organization=${APIGEE_ORG} \
+# apigee_edge_authentication_form.key_input_settings.username=${APIGEE_USER} \
+# apigee_edge_authentication_form.key_input_settings.password="${APIGEE_PASS}" -y
  
 
 # Clear Caches
 terminus env:clear-cache ${PANTHEON_SITE}.${PANTHEON_ENV} 
 
+# RUN update.php
+terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -- updb -y
+
 # Set the organization information
 # echo "About to connect portal to the configured org"
-# export CONNECTION_JSON="{\"auth_type\":\"basic\",\"organization\":\"${APIGEE_ORG}\",\"username\":\"${APIGEE_USER}\",\"password\":\"${APIGEE_PASS}\"}"
-# terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- key-save apigee_edge_connection_default "$CONNECTION_JSON"   --label="Apigee Edge Connection" --key-type=apigee_auth --key-provider=apigee_edge_private_file --key-input=apigee_auth_input --overwrite -y
-# terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -- config:set apigee_edge.auth active_key "apigee_edge_connection_default" -y
+export CONNECTION_JSON="{\"auth_type\":\"basic\",\"organization\":\"${APIGEE_ORG}\",\"username\":\"${APIGEE_USER}\",\"password\":\"${APIGEE_PASS}\"}"
+terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -q -- key-save apigee_edge_connection_default "$CONNECTION_JSON"   --label="Apigee Edge Connection" --key-type=apigee_auth --key-provider=apigee_edge_private_file --key-input=apigee_auth_input --overwrite -y
+terminus drush ${PANTHEON_SITE}.${PANTHEON_ENV} -- config:set apigee_edge.auth active_key "apigee_edge_connection_default" -y
 
 echo "Finished installing the latest code and configuring the site"
